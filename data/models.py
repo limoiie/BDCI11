@@ -32,18 +32,10 @@ class Result01(models.Model):
     def load_from_json(json_str):
         obj = json.loads(json_str)
         record = RawRecord01.objects.get(pk=obj['newsId'])
-        result = record.result01_set.create(eventLevel=obj['eventLevel'],
-                                            keywords=obj['keywords'],
-                                            name=obj['name'],
-                                            digest=obj['digest'])
-        return result
-
-    @staticmethod
-    def dump_to_json(obj):
-        dic = dict()
-        dic['newsId'] = str(obj['newsId'])
-        dic['eventLevel'] = str(obj['eventLevel'])
-        dic['keywords'] = str(obj['keywords'])
-        dic['name'] = str(obj['name'])
-        dic['digest'] = str(obj['digest'])
-        return json.dumps(dic)
+        assert record is not None
+        for entity in obj['entities']:
+            result = record.result01_set.create(eventLevel=entity['eventLevel'],
+                                                keywords=entity['keywords'],
+                                                name=entity['name'],
+                                                digest=entity['digest'])
+            yield result
