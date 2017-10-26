@@ -13,6 +13,7 @@ htmlcov/
 .coverage.*
 .cache/
 __pycache__/
+migrations/
 *.sqlite3
 
 # Windows
